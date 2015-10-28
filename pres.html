@@ -1,0 +1,760 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Syberia. Story of one project</title>
+  <style type="text/css">
+    body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #222;
+  background-color: #f7f7f7;
+  font-size: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+}
+
+.slide-content {
+  width: 800px;
+  height: 600px;
+  overflow: hidden;
+  margin: 80px auto 0 auto;
+  padding: 30px;
+
+  font-weight: 200;
+  font-size: 200%;
+  line-height: 1.375;
+}
+
+.controls {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+}
+
+.arrow {
+  width: 0; height: 0;
+  border: 30px solid #333;
+  float: left;
+  margin-right: 30px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.prev {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+
+  border-left-width: 0;
+  border-right-width: 50px;
+}
+
+.next {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+
+  border-left-width: 50px;
+  border-right-width: 0;
+}
+
+.prev:hover {
+  border-right-color: #888;
+  cursor: pointer;
+}
+
+.next:hover {
+  border-left-color: #888;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 300%;
+  line-height: 1.2;
+  text-align: center;
+  margin: 170px 0 0;
+}
+
+h2 {
+  font-size: 100%;
+  line-height: 1.2;
+  margin: 5px 0;
+  text-align: center;
+  font-weight: 200;
+}
+
+h3 {
+  font-size: 140%;
+  line-height: 1.2;
+  border-bottom: 1px solid #aaa;
+  margin: 0;
+  padding-bottom: 15px;
+}
+
+ul {
+  padding: 20px 0 0 60px;
+  font-weight: 200;
+  line-height: 1.375;
+}
+
+.author h1 {
+  font-size: 170%;
+  font-weight: 200;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.author h3 {
+  font-weight: 100;
+  text-align: center;
+  font-size: 95%;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  color: #44a4dd;
+}
+
+a:hover {
+  color: #66b5ff;
+}
+
+pre {
+  font-size: 60%;
+  line-height: 1.3;
+}
+
+.progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 3px;
+  background-color: #b4b4b4;
+
+  -webkit-transition: width 0.05s ease-out;
+  -moz-transition: width 0.05s ease-out;
+  -o-transition: width 0.05s ease-out;
+  transition: width 0.05s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 850px) {
+
+  body {
+    font-size: 70%;
+  }
+
+  .slide-content {
+    width: auto;
+  }
+
+  img {
+    width: 100%;
+  }
+
+  h1 {
+    margin-top: 120px;
+  }
+
+  .prev, .prev:hover {
+    border-right-color: rgba(135, 135, 135, 0.5);
+  }
+
+  .next, .next:hover {
+    border-left-color: rgba(135, 135, 135, 0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 50%;
+    overflow: hidden;
+  }
+
+  .slide-content {
+    padding: 10px;
+    margin-top: 10px;
+    height: 340px;
+  }
+
+  h1 {
+    margin-top: 50px;
+  }
+
+  ul {
+    padding-left: 25px;
+  }
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: letter;
+  }
+
+  .hidden {
+    display: inline;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  body {
+    margin: 0 auto !important;
+    border: 0;
+    padding: 0;
+    float: none !important;
+    overflow: visible;
+    background: none !important;
+    font-size: 52%;
+  }
+
+  .progress, .controls {
+    display: none;
+  }
+
+  .slide {
+    position: static;
+  }
+
+  .slide-content {
+    border: 1px solid #222;
+    margin-top: 0;
+    margin-bottom: 40px;
+    height: 3.5in;
+    overflow: visible;
+  }
+
+  .slide:nth-child(even) {
+    /* 2 slides per page */
+    page-break-before: always;
+  }
+}
+
+/*
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+*/
+
+code, pre {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  overflow: auto;
+  padding: 6px 10px;
+}
+
+code {
+  padding: 0 5px;
+}
+
+pre>code {
+  margin: 0; padding: 0;
+  border: none;
+  background: transparent;
+}
+
+pre .comment,
+pre .template_comment,
+pre .diff .header,
+pre .javadoc {
+  color: #998;
+  font-style: italic
+}
+
+pre .keyword,
+pre .css .rule .keyword,
+pre .winutils,
+pre .javascript .title,
+pre .nginx .title,
+pre .subst,
+pre .request,
+pre .status {
+  color: #333;
+  font-weight: bold
+}
+
+pre .number,
+pre .hexcolor,
+pre .ruby .constant {
+  color: #099;
+}
+
+pre .string,
+pre .tag .value,
+pre .phpdoc,
+pre .tex .formula {
+  color: #d14
+}
+
+pre .title,
+pre .id {
+  color: #900;
+  font-weight: bold
+}
+
+pre .javascript .title,
+pre .lisp .title,
+pre .clojure .title,
+pre .subst {
+  font-weight: normal
+}
+
+pre .class .title,
+pre .haskell .type,
+pre .vhdl .literal,
+pre .tex .command {
+  color: #458;
+  font-weight: bold
+}
+
+pre .tag,
+pre .tag .title,
+pre .rules .property,
+pre .django .tag .keyword {
+  color: #000080;
+  font-weight: normal
+}
+
+pre .attribute,
+pre .variable,
+pre .lisp .body {
+  color: #008080
+}
+
+pre .regexp {
+  color: #009926
+}
+
+pre .class {
+  color: #458;
+  font-weight: bold
+}
+
+pre .symbol,
+pre .ruby .symbol .string,
+pre .lisp .keyword,
+pre .tex .special,
+pre .prompt {
+  color: #990073
+}
+
+pre .built_in,
+pre .lisp .title,
+pre .clojure .built_in {
+  color: #0086b3
+}
+
+pre .preprocessor,
+pre .pi,
+pre .doctype,
+pre .shebang,
+pre .cdata {
+  color: #999;
+  font-weight: bold
+}
+
+pre .deletion {
+  background: #fdd
+}
+
+pre .addition {
+  background: #dfd
+}
+
+pre .diff .change {
+  background: #0086b3
+}
+
+pre .chunk {
+  color: #aaa
+}
+
+
+  </style>
+</head>
+<body>
+    <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="slide" id="slide-1">
+    <section class="slide-content"><h1 id="syberia">Syberia</h1>
+<h2 id="a-story-of-one-project">a story of one project</h2>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-2">
+    <section class="slide-content"><h3 id="who-is-avant-">Who is Avant?</h3>
+<p><img src="http://photos.prnewswire.com/prnvar/20150330/195281LOGO" width="100%"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-3">
+    <section class="slide-content"><h3 id="data-science-at-avant">Data Science at Avant</h3>
+<p>Initially only US credit model. Now also:</p>
+<ul>
+<li>credit models for other countries</li>
+<li>fraud modeling</li>
+<li>lead conversion</li>
+<li>direct mail</li>
+<li>prepayment</li>
+<li>debt management</li>
+<li>...</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-4">
+    <section class="slide-content"><h3 id="how-can-you-build-and-deploy-so-many-models-">How can you build and deploy so many models?</h3>
+<ul>
+<li>Team understood early on that most tasks should be automated.</li>
+<li>Built infrastructure prototype on weekends :) called it <strong>Syberia</strong>.</li>
+<li>Now we have 6 people working solely on Syberia and internal modules.</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h3 id="what-is-syberia-and-why-would-i-care-">What is Syberia and why would I care?</h3>
+<p>Syberia is an opinionated data science framework written in R.</p>
+<ul>
+<li>Data science is hard (because math)</li>
+<li>Transferring math into code is very hard</li>
+<li>Validating results is extremely hard!</li>
+</ul>
+<p>Need a set of conventions to help get the team on the same page.</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h3 id="story-of-the-framework">Story of the framework</h3>
+<p>It took about a year to build the framework to its full grace.</p>
+<p>Let&#39;s, however, pretend that instead of hacking on a weekend
+(mostly done by one person) there was a team and a formal process.</p>
+<p>N.B. If you do not talk about process - you still end up with a process, and
+there is no guarantee it&#39;s the right one :)</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h3 id="let-s-choose-a-process-">Let&#39;s choose a process!</h3>
+<p>Imagine you need to build a framework
+to reproducibly build, train, deploy statistical models.</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><h3 id="how-about-xp-https-en-wikipedia-org-wiki-extreme_programming-">How about <a href="https://en.wikipedia.org/wiki/Extreme_programming">XP</a>?</h3>
+<ul>
+<li>Use TDD</li>
+<li>Hack the features away, refactor if needed</li>
+<li>To minimize refactoring keep the final big picture in mind</li>
+</ul>
+<p>What is the big picture?</p>
+<p>Final acceptance test! :)</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
+    <section class="slide-content"><h3 id="initial-inputs">Initial inputs</h3>
+<ul>
+<li>Business owners pay you money for models produced</li>
+<li>Main app is Ruby on Rails, no existing frameworks</li>
+<li>Dataset is evolving frequently</li>
+<li>New ideas come up every day, need to frequently retrain</li>
+<li>Should be easy to use for math PhDs</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><h3 id="phase-one-write-the-final-acceptance-test">Phase one! Write the final acceptance test</h3>
+<ol>
+<li>Define minimal modules<ul>
+<li>Import data</li>
+<li>Munge data</li>
+<li>Model</li>
+<li>Validate</li>
+<li>Deploy</li>
+<li>...</li>
+</ul>
+</li>
+</ol>
+<p>TOO MANY MODULES... approaches like PMML don&#39;t cut it</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="resulting-exit-criteria">Resulting exit criteria</h3>
+<ul>
+<li>A model file should be self contained and reference other common modules</li>
+<li>New stages can be added by modifying only one file
+and be available in model file immediately</li>
+<li>Should provide interactivity to inspect the full data pipeline</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-12">
+    <section class="slide-content"><h3 id="start-working-on-the-prototype">Start working on the prototype</h3>
+<p>The rest is unsure for now... Start building, new requirements will be unlocked :)</p>
+<p>What language should we use? What can we refer to that has similar requirements?</p>
+<p>We chose R, and the inspiration was Ruby on Rails for clear module structure.</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="why-r-">Why R?</h3>
+<ul>
+<li>A lot of machine learning packages simply available</li>
+<li>Easy to hire data scientists</li>
+<li>R is a LISP! Interactive in its core</li>
+<li>Hence object serialization comes for free</li>
+<li>Everything is a list, easy to make new custom rules and structures</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="write-a-prototype-in-r">Write a prototype in R</h3>
+<p>Start with acceptance test! Write a model file</p>
+<pre><code class="lang-r">list(
+  import = list(s3 = <span class="string">'path/to/s3/bucket'</span>),
+  data   = list(
+     <span class="string">"Rename dep_var"</span> = list( renamer ~ <span class="literal">NULL</span>, c(X1  = <span class="string">'dep_var'</span>))
+    ,<span class="string">"Do something"</span>   = list( do_smth )             
+  ),
+  model  = list(<span class="string">'randomForest'</span>, param1, param2, <span class="keyword">...</span>),
+  export = list(s3 = <span class="string">'path/to/model/object'</span>)
+)</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-15">
+    <section class="slide-content"><h3 id="now-make-this-work-">Now make this work!</h3>
+<ul>
+<li>Work in one <code>environment</code>.</li>
+<li>Write <code>controllers</code> to transform these kind of minimal imports to actual code</li>
+<li>New dependency unlocked! <a href="http://github.com/robertzk/stagerunner">stagerunner</a></li>
+</ul>
+<p>Every name in the model file corresponds to a stage.
+How to define a stage? Write a function like <code>lib/stages/import.R</code> that
+transforms a list into a stagerunner.</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-16">
+    <section class="slide-content"><h3 id="what-is-a-stagerunner-">What is a stagerunner?</h3>
+<blockquote>
+<p>A stagerunner describes a linear sequence of execution: import data, perform
+  this munging step, then that munging, then do some modeling, etc. However, it
+  is structured hierarchically as a nested list for easier usability.</p>
+</blockquote>
+<p><img src="http://i.imgur.com/NKN3hnk.png" alt="little picture"></p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-17">
+    <section class="slide-content"><h3 id="moving-on">Moving on</h3>
+<p>Implemented import, data munging, model, export stages.</p>
+<p>Each of them should further logically be parametrized.</p>
+<ul>
+<li>Model stage should know which classifier to use</li>
+<li>Import/export should be able to import from/write to anywhere</li>
+<li>Data stage should be able to correctly work in train and predict</li>
+</ul>
+<p>These are new requirements!</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-18">
+    <section class="slide-content"><h3 id="parametrization-through-routes">Parametrization through routes</h3>
+<p>Much like <code>routes.rb</code> in Rails, there is a <code>routes.R</code> in Syberia.</p>
+<p>You can define custom preprocessors that will turn your inputs
+(like your model file) into reasonable code (stagerunner)</p>
+<pre><code class="lang-r">list(
+  <span class="string">'lib/adapters'</span>            = <span class="string">'adapters'</span>,
+  <span class="string">'lib/classifiers'</span>         = <span class="string">'classifiers'</span>,
+  <span class="string">'models'</span>                  = <span class="string">'models'</span>
+)</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-19">
+    <section class="slide-content"><h3 id="example-of-flexibility-of-this-approach">Example of flexibility of this approach</h3>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-20">
+    <section class="slide-content"><div class="author">
+  <h1 class="name">Kirill Sevastyanenko</h1>
+    <h3 class="twitter">
+      <a href="http://twitter.com/@kirillseva">@kirillseva</a>
+    </h3>
+    <h3 class="github">
+      <a href="https://github.com/syberia/examples">syberia/examples</a>
+    </h3>
+    <h3 class="email">
+      <a href="mailto:kirill.sevastyanenko@avant.com">kirill.sevastyanenko@avant.com</a>
+    </h3>
+</div>
+</section>
+  </div>
+
+
+
+  <script type="text/javascript">
+    /**
+ * Returns the current page number of the presentation.
+ */
+function currentPosition() {
+  return parseInt(document.querySelector('.slide:not(.hidden)').id.slice(6));
+}
+
+
+/**
+ * Navigates forward n pages
+ * If n is negative, we will navigate in reverse
+ */
+function navigate(n) {
+  var position = currentPosition();
+  var numSlides = document.getElementsByClassName('slide').length;
+
+  /* Positions are 1-indexed, so we need to add and subtract 1 */
+  var nextPosition = (position - 1 + n) % numSlides + 1;
+
+  /* Normalize nextPosition in-case of a negative modulo result */
+  nextPosition = (nextPosition - 1 + numSlides) % numSlides + 1;
+
+  document.getElementById('slide-' + position).classList.add('hidden');
+  document.getElementById('slide-' + nextPosition).classList.remove('hidden');
+
+  updateProgress();
+  updateURL();
+  updateTabIndex();
+}
+
+
+/**
+ * Updates the current URL to include a hashtag of the current page number.
+ */
+function updateURL() {
+  window.history.replaceState({} , null, '#' + currentPosition());
+}
+
+
+/**
+ * Sets the progress indicator.
+ */
+function updateProgress() {
+  var progressBar = document.querySelector('.progress-bar');
+
+  if (progressBar !== null) {
+    var numSlides = document.getElementsByClassName('slide').length;
+    var position = currentPosition() - 1;
+    var percent = (numSlides === 1) ? 100 : 100 * position / (numSlides - 1);
+    progressBar.style.width = percent.toString() + '%';
+  }
+}
+
+
+/**
+ * Removes tabindex property from all links on the current slide, sets
+ * tabindex = -1 for all links on other slides. Prevents slides from appearing
+ * out of control.
+ */
+function updateTabIndex() {
+  var allLinks = document.querySelectorAll('.slide a');
+  var position = currentPosition();
+  var currentPageLinks = document.getElementById('slide-' + position).querySelectorAll('a');
+  var i;
+
+  for (i = 0; i < allLinks.length; i++) {
+    allLinks[i].setAttribute('tabindex', -1);
+  }
+
+  for (i = 0; i < currentPageLinks.length; i++) {
+    currentPageLinks[i].removeAttribute('tabindex');
+  }
+}
+
+/**
+ * Determines whether or not we are currently in full screen mode
+ */
+function isFullScreen() {
+  return document.fullscreenElement ||
+         document.mozFullScreenElement ||
+         document.webkitFullscreenElement ||
+         document.msFullscreenElement;
+}
+
+/**
+ * Toggle fullScreen mode on document element.
+ * Works on chrome (>= 15), firefox (>= 9), ie (>= 11), opera(>= 12.1), safari (>= 5).
+ */
+function toggleFullScreen() {
+  /* Convenient renames */
+  var docElem = document.documentElement;
+  var doc = document;
+
+  docElem.requestFullscreen =
+      docElem.requestFullscreen ||
+      docElem.msRequestFullscreen ||
+      docElem.mozRequestFullScreen ||
+      docElem.webkitRequestFullscreen.bind(docElem, Element.ALLOW_KEYBOARD_INPUT);
+
+  doc.exitFullscreen =
+      doc.exitFullscreen ||
+      doc.msExitFullscreen ||
+      doc.mozCancelFullScreen ||
+      doc.webkitExitFullscreen;
+
+  isFullScreen() ? doc.exitFullscreen() : docElem.requestFullscreen();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Update the tabindex to prevent weird slide transitioning
+  updateTabIndex();
+
+  // If the location hash specifies a page number, go to it.
+  var page = window.location.hash.slice(1);
+  if (page) {
+    navigate(parseInt(page) - 1);
+  }
+
+  document.onkeydown = function (e) {
+    var kc = e.keyCode;
+
+    // left, down, H, J, backspace, PgUp - BACK
+    // up, right, K, L, space, PgDn - FORWARD
+    // enter - FULLSCREEN
+    if (kc === 37 || kc === 40 || kc === 8 || kc === 72 || kc === 74 || kc === 33) {
+      navigate(-1);
+    } else if (kc === 38 || kc === 39 || kc === 32 || kc === 75 || kc === 76 || kc === 34) {
+      navigate(1);
+    } else if (kc === 13) {
+      toggleFullScreen();
+    }
+  };
+
+  if (document.querySelector('.next') && document.querySelector('.prev')) {
+    document.querySelector('.next').onclick = function (e) {
+      e.preventDefault();
+      navigate(1);
+    };
+
+    document.querySelector('.prev').onclick = function (e) {
+      e.preventDefault();
+      navigate(-1);
+    };
+  }
+});
+
+
+  </script>
+</body>
+</html>
