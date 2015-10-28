@@ -207,4 +207,14 @@ list(
 
 --
 
-### Example of flexibility of this approach
+### Controllers?
+
+- Define `lib/controllers/classifiers.R`
+- Any time you call `resource(lib/classifiers/blah)` that controller will be used.
+
+--
+
+### Demo
+
+- Show an example model written in Syberia
+- Train and deploy a model

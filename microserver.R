@@ -1,11 +1,31 @@
 library(microserver)
 library(methods)
+library(mungebits)
 library(stats)
-mod    <- lm(mpg ~ . , data = mtcars) # s3read('path/to/model')
-score <- function(mod, lst) {
-  lst <- lapply(lst, as.numeric)
-  df  <- data.frame(lst, stringsAsFactors = FALSE)
-  unname(predict(mod, df))
+library(gbm)
+predict.gbm <- gbm:::predict.gbm
+
+model <-  s3read('syberia/titanic/gbm')
+processSingleDataPoint <- function(datum, model) {
+  if (is.list(datum)) {
+    datum <- data.frame(denull(datum), stringsAsFactors=FALSE)
+  }
+  normalize(model$predict(datum, list(on_train = TRUE)))
 }
-routes <- list('/predict' = function(p, q) { list(score = score(mod, p)) }, function(...) "pong")
-microserver::run_server(routes, port = 8103)
+
+normalize <- function(num) {
+  MEAN <- 0.381971
+  SD   <- 0.4860552
+  1/(1 + exp((num - MEAN) / SD))
+}
+
+denull <- function (lst) {
+  Map(function (x) {if (is.null(x)) NA else x}, lst)
+}
+routes <- list(
+  '/predict' = function(p, q) {
+    list(score = processSingleDataPoint(p, model))
+  },
+  function(...) "pong")
+cat('serving...\n')
+microserver::run_server(routes, port = 8105)
