@@ -3,20 +3,20 @@ library(methods)
 library(mungebits)
 library(stats)
 library(gbm)
-predict.gbm <- gbm:::predict.gbm
+predict.gbm <- gbm:::predict.gbm # little hack
 
 model <-  s3read('syberia/titanic/gbm')
+
+normalize <- function(num) {
+  MEAN <- model$internal$mean_dv
+  SD   <- model$internal$sd_dv
+  1 / (1 + exp((num - MEAN) / SD))
+}
 processSingleDataPoint <- function(datum, model) {
   if (is.list(datum)) {
     datum <- data.frame(denull(datum), stringsAsFactors=FALSE)
   }
   normalize(model$predict(datum, list(on_train = TRUE)))
-}
-
-normalize <- function(num) {
-  MEAN <- 0.381971
-  SD   <- 0.4860552
-  1/(1 + exp((num - MEAN) / SD))
 }
 
 denull <- function (lst) {

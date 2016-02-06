@@ -3,14 +3,14 @@ author:
   name: Kirill Sevastyanenko
   email: kirill.sevastyanenko@avant.com
   twitter: kirillseva
-  github: syberia/examples
+  github: https://github.com/syberia/examples
 
 output: pres.html
 controls: false
 --
 
 # Syberia
-## a story of one project
+## Data science toolbox for R
 
 --
 
@@ -47,46 +47,16 @@ Syberia is an opinionated data science framework written in R.
 - Data science is hard (because math)
 - Transferring math into code is very hard
 - Validating results is extremely hard!
+- Maintaining statistical models is the worst.
 
 Need a set of conventions to help get the team on the same page.
-
---
-
-### Story of the framework
-
-It took about a year to build the framework to its full grace.
-
-Let's, however, pretend that instead of hacking on a weekend
-(mostly done by one person) there was a team and a formal process.
-
-N.B. If you do not talk about process - you still end up with a process, and
-there is no guarantee it's the right one :)
-
---
-
-### Let's choose a process!
-
-Imagine you need to build a framework
-to reproducibly build, train, deploy statistical models.
-
---
-
-### How about [XP](https://en.wikipedia.org/wiki/Extreme_programming)?
-
-- Use TDD
-- Hack the features away, refactor if needed
-- To minimize refactoring keep the final big picture in mind
-
-What is the big picture?
-
-Final acceptance test! :)
 
 --
 
 ### Initial inputs
 
 - Business owners pay you money for models produced
-- Main app is Ruby on Rails, no existing frameworks
+- Main app is Ruby on Rails, no existing frameworks for DS in ruby
 - Dataset is evolving frequently
 - New ideas come up every day, need to frequently retrain
 - Should be easy to use for math PhDs
@@ -130,9 +100,9 @@ We chose R, and the inspiration was Ruby on Rails for clear module structure.
 
 - A lot of machine learning packages simply available
 - Easy to hire data scientists
-- R is a LISP! Interactive in its core
-- Hence object serialization comes for free
-- Everything is a list, easy to make new custom rules and structures
+- R is (almost) a LISP! Interactive in its core
+- Serialization comes for free
+- Everything is a list, easy to make new custom rules, structures and DSLs
 
 --
 
@@ -157,8 +127,7 @@ list(
 ### Now make this work!
 
 - Work in one `environment`.
-- Write `controllers` to transform these kind of minimal imports to actual code
-- New dependency unlocked! [stagerunner](http://github.com/robertzk/stagerunner)
+- Compile a [stagerunner](http://github.com/robertzk/stagerunner) and then execute it.
 
 Every name in the model file corresponds to a stage.
 How to define a stage? Write a function like `lib/stages/import.R` that
@@ -216,5 +185,4 @@ list(
 
 ### Demo
 
-- Show an example model written in Syberia
-- Train and deploy a model
+Titanic survival model

@@ -402,7 +402,7 @@ pre .chunk {
 
   <div class="slide" id="slide-1">
     <section class="slide-content"><h1 id="syberia">Syberia</h1>
-<h2 id="a-story-of-one-project">a story of one project</h2>
+<h2 id="data-science-toolbox-for-r">Data science toolbox for R</h2>
 </section>
   </div>
   <div class="slide hidden" id="slide-2">
@@ -440,48 +440,23 @@ pre .chunk {
 <li>Data science is hard (because math)</li>
 <li>Transferring math into code is very hard</li>
 <li>Validating results is extremely hard!</li>
+<li>Maintaining statistical models is the worst.</li>
 </ul>
 <p>Need a set of conventions to help get the team on the same page.</p>
 </section>
   </div>
   <div class="slide hidden" id="slide-6">
-    <section class="slide-content"><h3 id="story-of-the-framework">Story of the framework</h3>
-<p>It took about a year to build the framework to its full grace.</p>
-<p>Let&#39;s, however, pretend that instead of hacking on a weekend
-(mostly done by one person) there was a team and a formal process.</p>
-<p>N.B. If you do not talk about process - you still end up with a process, and
-there is no guarantee it&#39;s the right one :)</p>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-7">
-    <section class="slide-content"><h3 id="let-s-choose-a-process-">Let&#39;s choose a process!</h3>
-<p>Imagine you need to build a framework
-to reproducibly build, train, deploy statistical models.</p>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-8">
-    <section class="slide-content"><h3 id="how-about-xp-https-en-wikipedia-org-wiki-extreme_programming-">How about <a href="https://en.wikipedia.org/wiki/Extreme_programming">XP</a>?</h3>
-<ul>
-<li>Use TDD</li>
-<li>Hack the features away, refactor if needed</li>
-<li>To minimize refactoring keep the final big picture in mind</li>
-</ul>
-<p>What is the big picture?</p>
-<p>Final acceptance test! :)</p>
-</section>
-  </div>
-  <div class="slide hidden" id="slide-9">
     <section class="slide-content"><h3 id="initial-inputs">Initial inputs</h3>
 <ul>
 <li>Business owners pay you money for models produced</li>
-<li>Main app is Ruby on Rails, no existing frameworks</li>
+<li>Main app is Ruby on Rails, no existing frameworks for DS in ruby</li>
 <li>Dataset is evolving frequently</li>
 <li>New ideas come up every day, need to frequently retrain</li>
 <li>Should be easy to use for math PhDs</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-10">
+  <div class="slide hidden" id="slide-7">
     <section class="slide-content"><h3 id="phase-one-write-the-final-acceptance-test">Phase one! Write the final acceptance test</h3>
 <ol>
 <li>Define minimal modules<ul>
@@ -497,7 +472,7 @@ to reproducibly build, train, deploy statistical models.</p>
 <p>TOO MANY MODULES... approaches like PMML don&#39;t cut it</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-11">
+  <div class="slide hidden" id="slide-8">
     <section class="slide-content"><h3 id="resulting-exit-criteria">Resulting exit criteria</h3>
 <ul>
 <li>A model file should be self contained and reference other common modules</li>
@@ -507,25 +482,25 @@ and be available in model file immediately</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-12">
+  <div class="slide hidden" id="slide-9">
     <section class="slide-content"><h3 id="start-working-on-the-prototype">Start working on the prototype</h3>
 <p>The rest is unsure for now... Start building, new requirements will be unlocked :)</p>
 <p>What language should we use? What can we refer to that has similar requirements?</p>
 <p>We chose R, and the inspiration was Ruby on Rails for clear module structure.</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
+  <div class="slide hidden" id="slide-10">
     <section class="slide-content"><h3 id="why-r-">Why R?</h3>
 <ul>
 <li>A lot of machine learning packages simply available</li>
 <li>Easy to hire data scientists</li>
-<li>R is a LISP! Interactive in its core</li>
-<li>Hence object serialization comes for free</li>
-<li>Everything is a list, easy to make new custom rules and structures</li>
+<li>R is (almost) a LISP! Interactive in its core</li>
+<li>Serialization comes for free</li>
+<li>Everything is a list, easy to make new custom rules, structures and DSLs</li>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-14">
+  <div class="slide hidden" id="slide-11">
     <section class="slide-content"><h3 id="write-a-prototype-in-r">Write a prototype in R</h3>
 <p>Start with acceptance test! Write a model file</p>
 <pre><code class="lang-r">list(
@@ -539,19 +514,18 @@ and be available in model file immediately</li>
 )</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-15">
+  <div class="slide hidden" id="slide-12">
     <section class="slide-content"><h3 id="now-make-this-work-">Now make this work!</h3>
 <ul>
 <li>Work in one <code>environment</code>.</li>
-<li>Write <code>controllers</code> to transform these kind of minimal imports to actual code</li>
-<li>New dependency unlocked! <a href="http://github.com/robertzk/stagerunner">stagerunner</a></li>
+<li>Compile a <a href="http://github.com/robertzk/stagerunner">stagerunner</a> and then execute it.</li>
 </ul>
 <p>Every name in the model file corresponds to a stage.
 How to define a stage? Write a function like <code>lib/stages/import.R</code> that
 transforms a list into a stagerunner.</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-16">
+  <div class="slide hidden" id="slide-13">
     <section class="slide-content"><h3 id="what-is-a-stagerunner-">What is a stagerunner?</h3>
 <blockquote>
 <p>A stagerunner describes a linear sequence of execution: import data, perform
@@ -561,7 +535,7 @@ transforms a list into a stagerunner.</p>
 <p><img src="http://i.imgur.com/NKN3hnk.png" alt="little picture"></p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-17">
+  <div class="slide hidden" id="slide-14">
     <section class="slide-content"><h3 id="moving-on">Moving on</h3>
 <p>Implemented import, data munging, model, export stages.</p>
 <p>Each of them should further logically be parametrized.</p>
@@ -573,7 +547,7 @@ transforms a list into a stagerunner.</p>
 <p>These are new requirements!</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-18">
+  <div class="slide hidden" id="slide-15">
     <section class="slide-content"><h3 id="parametrization-through-routes">Parametrization through routes</h3>
 <p>Much like <code>routes.rb</code> in Rails, there is a <code>routes.R</code> in Syberia.</p>
 <p>You can define custom preprocessors that will turn your inputs
@@ -585,7 +559,7 @@ transforms a list into a stagerunner.</p>
 )</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-19">
+  <div class="slide hidden" id="slide-16">
     <section class="slide-content"><h3 id="controllers-">Controllers?</h3>
 <ul>
 <li>Define <code>lib/controllers/classifiers.R</code></li>
@@ -593,22 +567,19 @@ transforms a list into a stagerunner.</p>
 </ul>
 </section>
   </div>
-  <div class="slide hidden" id="slide-20">
+  <div class="slide hidden" id="slide-17">
     <section class="slide-content"><h3 id="demo">Demo</h3>
-<ul>
-<li>Show an example model written in Syberia</li>
-<li>Train and deploy a model</li>
-</ul>
+<p>Titanic survival model</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-21">
+  <div class="slide hidden" id="slide-18">
     <section class="slide-content"><div class="author">
   <h1 class="name">Kirill Sevastyanenko</h1>
     <h3 class="twitter">
       <a href="http://twitter.com/@kirillseva">@kirillseva</a>
     </h3>
     <h3 class="github">
-      <a href="https://github.com/syberia/examples">syberia/examples</a>
+      <a href="https://github.com/https://github.com/syberia/examples">https://github.com/syberia/examples</a>
     </h3>
     <h3 class="email">
       <a href="mailto:kirill.sevastyanenko@avant.com">kirill.sevastyanenko@avant.com</a>
